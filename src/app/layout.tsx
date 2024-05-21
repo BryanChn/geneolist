@@ -1,7 +1,8 @@
-import { NextUIProvider } from "@nextui-org/system";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Providers } from "./providers";
+import { NavBar } from "./components/navbar";
+import { Cards } from "./components/cards";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +19,12 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body>
-                <Providers>{children}</Providers>
+                <Providers>
+                    <div className="min-h-screen bg-gray-100">
+                        <NavBar />
+                        {children}
+                    </div>
+                </Providers>
             </body>
         </html>
     );

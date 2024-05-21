@@ -1,9 +1,10 @@
 import { Button } from "@nextui-org/button";
+import { Cards } from "../components/cards";
+
 export default function Dashboard() {
     return (
         <div>
-            ALLO
-            <Button>Press me</Button>
+            <Cards />
         </div>
     );
 }
