@@ -37,3 +37,17 @@ model Subscription {
   users         User[]
 }
 
+model Death {
+  id           Int             @id @default(autoincrement())
+  name          String
+  lastName      String
+  dateDeath        DateTime
+  dateBirth          DateTime
+  town          String
+  country       String
+  sexe          String
+  parents       String
+  marriedName       String  
+ 
+}
+
