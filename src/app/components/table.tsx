@@ -10,6 +10,7 @@ import {
     RadioGroup,
     Radio,
 } from "@nextui-org/react";
+import { data } from "autoprefixer";
 
 const colors = [
     "default",
@@ -20,7 +21,20 @@ const colors = [
     "danger",
 ];
 
-export default function Tables() {
+interface DeathData {
+    id: string;
+    name: string;
+    lastName: string;
+    dateDeath: string;
+    dateBirth: string;
+    country: string;
+    town: string;
+    sexe: string;
+    parents: string;
+    marriedName: string;
+}
+
+export const Tables = ({ data }: { data: DeathData[] }) => {
     return (
         <div className="flex flex-col gap-3">
             <Table
@@ -34,54 +48,32 @@ export default function Tables() {
                     <TableColumn>Prénom</TableColumn>
                     <TableColumn>Date décès</TableColumn>
                     <TableColumn>Date de naissance</TableColumn>
+                    <TableColumn>Pays</TableColumn>
                     <TableColumn>Ville</TableColumn>
                     <TableColumn>Sexe</TableColumn>
                     <TableColumn>Parents</TableColumn>
                     <TableColumn>Nom du marie/mariée</TableColumn>
                 </TableHeader>
                 <TableBody>
-                    <TableRow key="1">
-                        <TableCell>William </TableCell>
-                        <TableCell>Howard</TableCell>
-                        <TableCell>12/05/2024</TableCell>
-                        <TableCell>10/02/1985</TableCell>
-                        <TableCell>Mulhouse</TableCell>
-                        <TableCell>Homme</TableCell>
-                        <TableCell>Nicola Howard</TableCell>
-                        <TableCell>Isabelle rougie</TableCell>
-                    </TableRow>
-                    <TableRow key="2">
-                        <TableCell>William </TableCell>
-                        <TableCell>Howard</TableCell>
-                        <TableCell>12/05/2024</TableCell>
-                        <TableCell>10/02/1985</TableCell>
-                        <TableCell>Mulhouse</TableCell>
-                        <TableCell>Homme</TableCell>
-                        <TableCell>Nicola Howard</TableCell>
-                        <TableCell>Isabelle rougie</TableCell>
-                    </TableRow>
-                    <TableRow key="3">
-                        <TableCell>William </TableCell>
-                        <TableCell>Howard</TableCell>
-                        <TableCell>12/05/2024</TableCell>
-                        <TableCell>10/02/1985</TableCell>
-                        <TableCell>Mulhouse</TableCell>
-                        <TableCell>Homme</TableCell>
-                        <TableCell>Nicola Howard</TableCell>
-                        <TableCell>Isabelle rougie</TableCell>
-                    </TableRow>
-                    <TableRow key="4">
-                        <TableCell>William </TableCell>
-                        <TableCell>Howard</TableCell>
-                        <TableCell>12/05/2024</TableCell>
-                        <TableCell>10/02/1985</TableCell>
-                        <TableCell>Mulhouse</TableCell>
-                        <TableCell>Homme</TableCell>
-                        <TableCell>Nicola Howard</TableCell>
-                        <TableCell>Isabelle rougie</TableCell>
-                    </TableRow>
+                    {data.map((death) => (
+                        <TableRow key={death.id}>
+                            <TableCell>{death.name}</TableCell>
+                            <TableCell>{death.lastName}</TableCell>
+                            <TableCell>
+                                {new Date(death.dateDeath).toLocaleDateString()}
+                            </TableCell>
+                            <TableCell>
+                                {new Date(death.dateBirth).toLocaleDateString()}
+                            </TableCell>
+                            <TableCell>{death.country}</TableCell>
+                            <TableCell>{death.town}</TableCell>
+                            <TableCell>{death.sexe}</TableCell>
+                            <TableCell>{death.parents}</TableCell>
+                            <TableCell>{death.marriedName}</TableCell>
+                        </TableRow>
+                    ))}
                 </TableBody>
             </Table>
         </div>
     );
-}
+};

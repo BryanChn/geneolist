@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
     Navbar,
     NavbarBrand,
@@ -11,22 +11,16 @@ import {
     Link,
     Button,
 } from "@nextui-org/react";
+import { color } from "framer-motion";
 
 export const NavBar = () => {
-    const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [activeItem, setActiveItem] = useState("");
 
-    const menuItems = [
-        "Profile",
-        "Dashboard",
-        "Activity",
-        "Analytics",
-        "System",
-        "Deployments",
-        "My Settings",
-        "Team Settings",
-        "Help & Feedback",
-        "Log Out",
-    ];
+    const handleItemClick = (item: string) => {
+        setActiveItem(item);
+    };
+    const menuItems = ["Profile", "Dashboard", "Log Out"];
 
     return (
         <Navbar onMenuOpenChange={setIsMenuOpen}>
@@ -41,18 +35,42 @@ export const NavBar = () => {
             </NavbarContent>
 
             <NavbarContent className="sm:flex gap-4" justify="center">
-                <NavbarItem>
-                    <Link color="foreground" href="#">
+                <NavbarItem
+                    isActive={activeItem === "acceuil"}
+                    style={{ color: "prymary" }}
+                >
+                    <Link
+                        color="foreground"
+                        href="/"
+                        onClick={() => setActiveItem("acceuil")}
+                    >
+                        Accueil
+                    </Link>
+                </NavbarItem>
+                <NavbarItem isActive={activeItem === "Pays"}>
+                    <Link
+                        color="foreground"
+                        href="/country"
+                        onClick={() => handleItemClick("Pays")}
+                    >
                         Pays
                     </Link>
                 </NavbarItem>
-                <NavbarItem isActive>
-                    <Link href="#" aria-current="page">
+                <NavbarItem isActive={activeItem === "Demande de recherche"}>
+                    <Link
+                        href="#"
+                        color="foreground"
+                        onClick={() => handleItemClick("Demande de recherche")}
+                    >
                         Demande de recherche
                     </Link>
                 </NavbarItem>
-                <NavbarItem>
-                    <Link color="foreground" href="#">
+                <NavbarItem isActive={activeItem === "Annonces"}>
+                    <Link
+                        color="foreground"
+                        href="#"
+                        onClick={() => handleItemClick("Annonces")}
+                    >
                         Annonces
                     </Link>
                 </NavbarItem>

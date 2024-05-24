@@ -38,3 +38,31 @@ function parseDate(dateString: string): Date {
     const [day, month, year] = dateString.split("/").map(Number);
     return new Date(year, month - 1, day);
 }
+
+export async function GET(req: NextRequest) {
+    const { searchParams } = new URL(req.url);
+    const country = searchParams.get("country");
+
+    if (!country) {
+        return NextResponse.json(
+            { error: "Country is required" },
+            { status: 400 }
+        );
+    }
+
+    try {
+        const deaths = await prisma.death.findMany({
+            where: {
+                country: country,
+            },
+        });
+
+        return NextResponse.json(deaths, { status: 200 });
+    } catch (error) {
+        console.error(error);
+        return NextResponse.json(
+            { error: "Unable to fetch deaths" },
+            { status: 500 }
+        );
+    }
+}

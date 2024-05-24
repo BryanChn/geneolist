@@ -1,22 +1,29 @@
 import React from "react";
 import { Card, CardHeader, CardBody, Image } from "@nextui-org/react";
+import Link from "next/link";
 
-export const Cards = () => {
+export const Cards = ({
+    country,
+    imageUrl,
+}: {
+    country: string;
+    imageUrl: string;
+}) => {
     return (
         <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center">
             <Card className="py-4">
                 <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
-                    <p className="text-tiny uppercase font-bold">test</p>
-                    <small className="text-default-500">test</small>
-                    <h4 className="font-bold text-large">Recherche</h4>
+                    <h4 className="font-bold text-large">{country}</h4>
                 </CardHeader>
                 <CardBody className="overflow-visible py-2">
-                    <Image
-                        alt="Card background"
-                        className="object-cover rounded-xl"
-                        src="https://nextui.org/images/hero-card-complete.jpeg"
-                        width={270}
-                    />
+                    <Link href={`/death?country=${country}`}>
+                        <Image
+                            alt={`${country} flag`}
+                            className="object-cover rounded-xl"
+                            src={imageUrl}
+                            width={270}
+                        />
+                    </Link>
                 </CardBody>
             </Card>
         </div>
