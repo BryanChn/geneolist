@@ -24,7 +24,7 @@ export async function POST(req: Request) {
             name: name,
             lastName: lastName,
             password: password,
-            role: "USER",
+            role: "USER", // Default role
             subscriptionId: freeSubscription.id, // Default subscription
         },
     });

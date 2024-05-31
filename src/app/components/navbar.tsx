@@ -11,7 +11,8 @@ import {
     Link,
     Button,
 } from "@nextui-org/react";
-import { color } from "framer-motion";
+import ModalSignUp from "./modalSignUp";
+import ModalSignIn from "./ModalSignIn";
 
 export const NavBar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -20,6 +21,7 @@ export const NavBar = () => {
     const handleItemClick = (item: string) => {
         setActiveItem(item);
     };
+
     const menuItems = ["Profile", "Dashboard", "Log Out"];
 
     return (
@@ -37,7 +39,7 @@ export const NavBar = () => {
             <NavbarContent className="sm:flex gap-4" justify="center">
                 <NavbarItem
                     isActive={activeItem === "acceuil"}
-                    style={{ color: "prymary" }}
+                    style={{ color: "primary" }}
                 >
                     <Link
                         color="foreground"
@@ -81,9 +83,10 @@ export const NavBar = () => {
                 </NavbarItem>
 
                 <NavbarItem>
-                    <Button as={Link} color="primary" href="#" variant="flat">
-                        Sign Up
-                    </Button>
+                    <ModalSignIn />
+                </NavbarItem>
+                <NavbarItem>
+                    <ModalSignUp />
                 </NavbarItem>
             </NavbarContent>
             <NavbarMenu className="max-w-sm mx-auto">

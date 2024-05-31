@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import { Providers } from "./providers";
 import { NavBar } from "./components/navbar";
 import { Cards } from "./components/cards";
+import { SessionProvider } from "next-auth/react";
+import { NextAuthProvider } from "@/next-auth/nextAuthProviders";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,12 +21,14 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body>
-                <Providers>
-                    <div className="min-h-screen bg-gray-100">
-                        <NavBar />
-                        {children}
-                    </div>
-                </Providers>
+                <NextAuthProvider>
+                    <Providers>
+                        <div className="min-h-screen bg-gray-100">
+                            <NavBar />
+                            {children}
+                        </div>
+                    </Providers>
+                </NextAuthProvider>
             </body>
         </html>
     );
