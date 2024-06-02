@@ -1,9 +1,16 @@
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { AuthOptions } from "next-auth";
+import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaClient } from "@prisma/client";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import bcrypt from "bcrypt";
 
-export const authOptions: AuthOptions = {
+const prisma = new PrismaClient();
+interface Credentials {
+    email: string;
+    password: string;
+}
+
+export const authOptions = {
     providers: [
         CredentialsProvider({
             name: "Credentials",
@@ -11,36 +18,45 @@ export const authOptions: AuthOptions = {
                 email: { label: "Email", type: "text" },
                 password: { label: "Password", type: "password" },
             },
-            async authorize(credentials) {
+            async authorize(credentials: Credentials | undefined) {
                 if (!credentials) {
-                    return null;
+                    throw new Error("No credentials provided");
                 }
 
                 const user = await prisma.user.findUnique({
                     where: { email: credentials.email },
                 });
 
-                if (user && user.password === credentials.password) {
-                    return user;
-                } else {
-                    return null;
+                if (user) {
+                    const isValidPassword = await bcrypt.compare(
+                        credentials.password,
+                        user.password
+                    );
+                    if (isValidPassword) {
+                        return {
+                            ...user,
+                            id: user.id.toString(), // Convert the id to a string
+                        };
+                    }
                 }
+                return null;
             },
         }),
     ],
-
+    adapter: PrismaAdapter(prisma),
     callbacks: {
-        async session({ session, token }) {
+        async session({ session, token }: { session: any; token: any }) {
             if (token) {
-                (session as any).userId = token.id;
-                (session as any).role = (token as any).role;
+                session.user = token;
+                session.userId = token.id;
+                session.role = token.role;
             }
             return session;
         },
-        async jwt({ token, user }) {
+        async jwt({ token, user }: { token: any; user: any }) {
             if (user) {
                 token.id = user.id;
-                token.role = (user as any).role;
+                token.role = user.role;
             }
             return token;
         },

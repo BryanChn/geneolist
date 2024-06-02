@@ -9,12 +9,14 @@ import {
     Button,
     Input,
     Link,
+    colors,
 } from "@nextui-org/react";
 import { MailIcon } from "@/styles/icon/mails";
 import { LockIcon } from "@/styles/icon/lock";
 import { UsersIcon } from "@/styles/icon/users";
 import { useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
+import { color } from "framer-motion";
 
 interface CreateUser {
     name: string;
@@ -88,6 +90,11 @@ export default function ModalSignUp() {
                                 {...register("name", { required: true })}
                                 required
                             />
+                            {errors.name && (
+                                <p style={{ color: "red" }}>
+                                    Votre nom est requis
+                                </p>
+                            )}
                             <Input
                                 endContent={
                                     <UsersIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
@@ -98,6 +105,11 @@ export default function ModalSignUp() {
                                 variant="bordered"
                                 {...register("lastName", { required: true })}
                             />
+                            {errors.lastName && (
+                                <p style={{ color: "red" }}>
+                                    Votre prénom est requis
+                                </p>
+                            )}
                             <Input
                                 autoFocus
                                 endContent={
@@ -108,10 +120,16 @@ export default function ModalSignUp() {
                                 variant="bordered"
                                 {...register("email", {
                                     required: "l'adresse email est requise",
+                                    pattern: {
+                                        value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                                        message: "l'adresse email est invalide",
+                                    },
                                 })}
                             />
                             {errors.email && (
-                                <p role="alert">{errors.email.message}</p>
+                                <p style={{ color: "red" }}>
+                                    {errors.email.message}
+                                </p>
                             )}
 
                             <Input
@@ -124,6 +142,11 @@ export default function ModalSignUp() {
                                 variant="bordered"
                                 {...register("password", { required: true })}
                             />
+                            {errors.password && (
+                                <p style={{ color: "red" }}>
+                                    Votre mot de passe est requis
+                                </p>
+                            )}
                             <ModalFooter>
                                 <Button
                                     color="danger"
