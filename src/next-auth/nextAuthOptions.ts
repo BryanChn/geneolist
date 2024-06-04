@@ -27,19 +27,23 @@ export const authOptions = {
                     where: { email: credentials.email },
                 });
 
-                if (user) {
-                    const isValidPassword = await bcrypt.compare(
-                        credentials.password,
-                        user.password
-                    );
-                    if (isValidPassword) {
-                        return {
-                            ...user,
-                            id: user.id.toString(), // Convert the id to a string
-                        };
-                    }
+                if (!user) {
+                    throw new Error("Adresse e-mail incorrecte");
                 }
-                return null;
+
+                const isPasswordValid = await bcrypt.compare(
+                    credentials.password,
+                    user.password
+                );
+
+                if (!isPasswordValid) {
+                    throw new Error("Mot de passe incorrect");
+                }
+
+                return {
+                    ...user,
+                    id: user.id.toString(),
+                };
             },
         }),
     ],

@@ -5,6 +5,7 @@ import { NavBar } from "./components/navbar";
 import { Cards } from "./components/cards";
 import { SessionProvider } from "next-auth/react";
 import { NextAuthProvider } from "@/next-auth/nextAuthProviders";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,6 +23,7 @@ export default function RootLayout({
         <html lang="en">
             <body>
                 <NextAuthProvider>
+                    <Toaster position="top-right" reverseOrder={true} />
                     <Providers>
                         <div className="min-h-screen bg-gray-100">
                             <NavBar />

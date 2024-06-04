@@ -34,7 +34,7 @@ interface DeathData {
     marriedName: string;
 }
 
-export const Tables = ({ data }: { data: DeathData[] }) => {
+export const TablesDeath = ({ data }: { data: DeathData[] }) => {
     return (
         <div className="flex flex-col gap-3">
             <Table

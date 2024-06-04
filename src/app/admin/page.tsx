@@ -1,7 +1,13 @@
+"use client";
+import AdminGuard from "../components/adminGuard";
+import { MainTabs } from "../components/tabsAdmin";
+
 export default function AdminPage() {
     return (
-        <div>
-            <h1>Admin Page</h1>
-        </div>
+        <AdminGuard>
+            <div>
+                <MainTabs />
+            </div>
+        </AdminGuard>
     );
 }

@@ -2,7 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Tables } from "../components/table";
+import { TablesDeath } from "../components/tableDeath";
 
 export default function Death() {
     const searchParams = useSearchParams();
@@ -28,7 +28,7 @@ export default function Death() {
     return (
         <div>
             <h1>Décès en {country}</h1>
-            <Tables data={deaths} />
+            <TablesDeath data={deaths} />
         </div>
     );
 }

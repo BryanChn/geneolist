@@ -1,22 +1,37 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Navbar,
     NavbarBrand,
     NavbarContent,
     NavbarItem,
-    NavbarMenuToggle,
-    NavbarMenu,
-    NavbarMenuItem,
     Link,
     Button,
 } from "@nextui-org/react";
 import ModalSignUp from "./modalSignUp";
 import ModalSignIn from "./ModalSignIn";
+import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation"; // Use next/navigation instead of next/router
 
 export const NavBar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [activeItem, setActiveItem] = useState("");
+    const { data: session, status } = useSession();
+    const [isAdmin, setIsAdmin] = useState(false);
+    const router = useRouter();
+
+    useEffect(() => {
+        if (status === "authenticated" && session?.user?.role === "ADMIN") {
+            setIsAdmin(true);
+        } else {
+            setIsAdmin(false);
+        }
+    }, [session, status]);
+
+    const handleSingout = async () => {
+        await signOut({ redirect: false });
+        router.push("/");
+    };
 
     const handleItemClick = (item: string) => {
         setActiveItem(item);
@@ -27,10 +42,6 @@ export const NavBar = () => {
     return (
         <Navbar onMenuOpenChange={setIsMenuOpen}>
             <NavbarContent>
-                <NavbarMenuToggle
-                    aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-                    className="sm:hidden"
-                />
                 <NavbarBrand>
                     <p className="font-bold text-inherit">Geneoliste</p>
                 </NavbarBrand>
@@ -67,48 +78,43 @@ export const NavBar = () => {
                         Demande de recherche
                     </Link>
                 </NavbarItem>
-                <NavbarItem isActive={activeItem === "Annonces"}>
-                    <Link
-                        color="foreground"
-                        href="#"
-                        onClick={() => handleItemClick("Annonces")}
-                    >
-                        Annonces
-                    </Link>
-                </NavbarItem>
+                {isAdmin && (
+                    <NavbarItem>
+                        <Link color="foreground" href="/admin">
+                            Administration
+                        </Link>
+                    </NavbarItem>
+                )}
             </NavbarContent>
             <NavbarContent justify="end">
-                <NavbarItem className="hidden lg:flex">
-                    <Link href="#">Login</Link>
-                </NavbarItem>
-
-                <NavbarItem>
-                    <ModalSignIn />
-                </NavbarItem>
-                <NavbarItem>
-                    <ModalSignUp />
-                </NavbarItem>
+                {session ? (
+                    <>
+                        <NavbarItem>
+                            {session && session.user && (
+                                <p>Bonjour, {session.user.name}</p>
+                            )}
+                        </NavbarItem>
+                        <NavbarItem>
+                            <Button
+                                color="danger"
+                                variant="flat"
+                                onPress={handleSingout}
+                            >
+                                Déconnexion
+                            </Button>
+                        </NavbarItem>
+                    </>
+                ) : (
+                    <>
+                        <NavbarItem>
+                            <ModalSignIn />
+                        </NavbarItem>
+                        <NavbarItem>
+                            <ModalSignUp />
+                        </NavbarItem>
+                    </>
+                )}
             </NavbarContent>
-            <NavbarMenu className="max-w-sm mx-auto">
-                {menuItems.map((item, index) => (
-                    <NavbarMenuItem key={`${item}-${index}`}>
-                        <Link
-                            color={
-                                index === 2
-                                    ? "primary"
-                                    : index === menuItems.length - 1
-                                    ? "danger"
-                                    : "foreground"
-                            }
-                            className="w-full"
-                            href="#"
-                            size="lg"
-                        >
-                            {item}
-                        </Link>
-                    </NavbarMenuItem>
-                ))}
-            </NavbarMenu>
         </Navbar>
     );
 };

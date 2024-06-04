@@ -23,8 +23,8 @@ export async function POST(req: Request) {
         data: {
             name: name,
             lastName: lastName,
-            dateDeath: dateDeathObj,
-            dateBirth: dateBirthObj,
+            dateDeath: new Date(dateDeath),
+            dateBirth: new Date(dateBirth),
             town: town,
             country: country,
             sexe: sexe,
