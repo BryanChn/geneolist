@@ -9,7 +9,7 @@ const AdminGuard = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => {
         if (status === "loading") return;
         if (status === "unauthenticated" || session?.user?.role !== "ADMIN") {
-            router.push("/"); // redirection vers profile user
+            router.push("/");
         }
     }, [session, status, router]);
 

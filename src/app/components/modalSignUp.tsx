@@ -69,7 +69,7 @@ export default function ModalSignUp() {
     return (
         <>
             <Toaster position="bottom-right" reverseOrder={false} />
-            <Button onPress={openModal} color="primary">
+            <Button onPress={openModal} color="primary" variant="shadow">
                 Inscrivez-vous
             </Button>
             <Modal isOpen={isOpen} onClose={closeModal} placement="top-center">

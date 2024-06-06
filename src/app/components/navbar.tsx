@@ -11,7 +11,7 @@ import {
 import ModalSignUp from "./modalSignUp";
 import ModalSignIn from "./ModalSignIn";
 import { signOut, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation"; // Use next/navigation instead of next/router
+import { usePathname, useRouter } from "next/navigation";
 
 export const NavBar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -19,6 +19,7 @@ export const NavBar = () => {
     const { data: session, status } = useSession();
     const [isAdmin, setIsAdmin] = useState(false);
     const router = useRouter();
+    const pathname = usePathname();
 
     useEffect(() => {
         if (status === "authenticated" && session?.user?.role === "ADMIN") {
@@ -36,14 +37,20 @@ export const NavBar = () => {
     const handleItemClick = (item: string) => {
         setActiveItem(item);
     };
+    const isActive = (path: string) => pathname === path;
 
-    const menuItems = ["Profile", "Dashboard", "Log Out"];
+    // const menuItems = ["Profile", "Dashboard", "Log Out"];
 
     return (
-        <Navbar onMenuOpenChange={setIsMenuOpen}>
+        <Navbar
+            onMenuOpenChange={setIsMenuOpen}
+            className="bg-gradient-to-r from-emerald-400 from-10% to-white-400 to-90% rounded-lg shadow-2xl"
+        >
             <NavbarContent>
                 <NavbarBrand>
-                    <p className="font-bold text-inherit">Geneoliste</p>
+                    <p className="font-bold text-inherit text-white text-2xl font-mono">
+                        Geneoliste
+                    </p>
                 </NavbarBrand>
             </NavbarContent>
 
@@ -53,34 +60,50 @@ export const NavBar = () => {
                     style={{ color: "primary" }}
                 >
                     <Link
-                        color="foreground"
+                        className={`${
+                            isActive("/")
+                                ? "text-primary font-bold"
+                                : "text-white"
+                        } font-bold text-lg font-mono`}
                         href="/"
-                        onClick={() => setActiveItem("acceuil")}
+                        onClick={() => handleItemClick("/")}
                     >
                         Accueil
                     </Link>
                 </NavbarItem>
                 <NavbarItem isActive={activeItem === "Pays"}>
                     <Link
-                        color="foreground"
+                        className={`${
+                            isActive("/country")
+                                ? "text-primary font-bold"
+                                : "text-white"
+                        } font-bold text-lg font-mono`}
                         href="/country"
-                        onClick={() => handleItemClick("Pays")}
+                        onClick={() => handleItemClick("/country")}
                     >
                         Pays
                     </Link>
                 </NavbarItem>
                 <NavbarItem isActive={activeItem === "Demande de recherche"}>
-                    <Link
+                    {/* <Link
                         href="#"
                         color="foreground"
                         onClick={() => handleItemClick("Demande de recherche")}
                     >
                         Demande de recherche
-                    </Link>
+                    </Link> */}
                 </NavbarItem>
                 {isAdmin && (
                     <NavbarItem>
-                        <Link color="foreground" href="/admin">
+                        <Link
+                            className={`${
+                                isActive("/admin")
+                                    ? "text-primary font-bold"
+                                    : "text-white"
+                            } font-bold text-lg font-mono`}
+                            href="/admin"
+                            onClick={() => handleItemClick("/admin")}
+                        >
                             Administration
                         </Link>
                     </NavbarItem>

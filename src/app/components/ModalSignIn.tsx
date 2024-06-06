@@ -57,7 +57,7 @@ export default function ModalSignIn() {
 
     return (
         <>
-            <Button onPress={openModal} color="primary" variant="flat">
+            <Button onPress={openModal} color="primary" variant="light">
                 Connectez-vous
             </Button>
             <Modal isOpen={isOpen} onClose={closeModal} placement="top-center">
@@ -103,7 +103,7 @@ export default function ModalSignIn() {
                             >
                                 Fermer
                             </Button>
-                            <Button color="success" type="submit">
+                            <Button color="primary" type="submit">
                                 Connexion
                             </Button>
                         </ModalFooter>

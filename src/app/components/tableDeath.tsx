@@ -10,7 +10,6 @@ import {
     RadioGroup,
     Radio,
 } from "@nextui-org/react";
-import { data } from "autoprefixer";
 
 const colors = [
     "default",

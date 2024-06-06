@@ -23,12 +23,11 @@ export default function RootLayout({
         <html lang="en">
             <body>
                 <NextAuthProvider>
-                    <Toaster position="top-right" reverseOrder={true} />
                     <Providers>
-                        <div className="min-h-screen bg-gray-100">
-                            <NavBar />
-                            {children}
-                        </div>
+                        <Toaster position="top-right" reverseOrder={true} />
+
+                        <NavBar />
+                        {children}
                     </Providers>
                 </NextAuthProvider>
             </body>
