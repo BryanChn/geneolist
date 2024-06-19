@@ -3,8 +3,10 @@ import { Cards } from "../components/cards";
 
 export default function Country() {
     const countries = [
-        { name: "France", imageUrl: "/assets/france.png" },
+        // { name: "France", imageUrl: "/assets/france.png" },
         { name: "Tunisie", imageUrl: "/assets/tunisie.png" },
+        { name: "Algerie", imageUrl: "/assets/algerie.png" },
+        { name: "Maroc", imageUrl: "/assets/maroc.png" },
     ];
     return (
         <div className="flex flex-col items-center mt-16">
