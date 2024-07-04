@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
     Table,
     TableHeader,
@@ -7,8 +7,12 @@ import {
     TableBody,
     TableRow,
     TableCell,
-    RadioGroup,
-    Radio,
+    Modal,
+    ModalContent,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+    Button,
 } from "@nextui-org/react";
 
 const colors = [
@@ -26,53 +30,96 @@ interface DeathData {
     lastName: string;
     dateDeath: string;
     dateBirth: string;
-    country: string;
     town: string;
     sexe: string;
     parents: string;
     marriedName: string;
+    country: string;
 }
 
 export const TablesDeath = ({ data }: { data: DeathData[] }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [selectedDeath, setSelectedDeath] = useState<DeathData | null>(null);
+
+    const openModal = (death: DeathData) => {
+        setSelectedDeath(death);
+        setIsOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsOpen(false);
+        setSelectedDeath(null);
+    };
+
     return (
         <div className="flex flex-col gap-3">
             <Table
                 color="success"
                 selectionMode="single"
-                defaultSelectedKeys={["2"]}
                 aria-label="Example static collection table"
             >
                 <TableHeader>
                     <TableColumn>Nom</TableColumn>
                     <TableColumn>Prénom</TableColumn>
-                    <TableColumn>Date décès</TableColumn>
-                    <TableColumn>Date de naissance</TableColumn>
                     <TableColumn>Pays</TableColumn>
-                    <TableColumn>Ville</TableColumn>
-                    <TableColumn>Sexe</TableColumn>
-                    <TableColumn>Parents</TableColumn>
-                    <TableColumn>Nom du marie/mariée</TableColumn>
                 </TableHeader>
                 <TableBody>
                     {data.map((death) => (
-                        <TableRow key={death.id}>
+                        <TableRow
+                            key={death.id}
+                            onClick={() => openModal(death)}
+                        >
                             <TableCell>{death.name}</TableCell>
                             <TableCell>{death.lastName}</TableCell>
-                            <TableCell>
-                                {new Date(death.dateDeath).toLocaleDateString()}
-                            </TableCell>
-                            <TableCell>
-                                {new Date(death.dateBirth).toLocaleDateString()}
-                            </TableCell>
                             <TableCell>{death.country}</TableCell>
-                            <TableCell>{death.town}</TableCell>
-                            <TableCell>{death.sexe}</TableCell>
-                            <TableCell>{death.parents}</TableCell>
-                            <TableCell>{death.marriedName}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
             </Table>
+
+            {selectedDeath && (
+                <Modal
+                    isOpen={isOpen}
+                    onClose={closeModal}
+                    placement="top-center"
+                >
+                    <ModalContent>
+                        <ModalHeader>
+                            {selectedDeath.name} {selectedDeath.lastName}
+                        </ModalHeader>
+                        <ModalBody>
+                            <p>
+                                Date de naissance:{" "}
+                                {new Date(
+                                    selectedDeath.dateBirth
+                                ).toLocaleDateString()}
+                            </p>
+                            <p>
+                                Date de décès:{" "}
+                                {new Date(
+                                    selectedDeath.dateDeath
+                                ).toLocaleDateString()}
+                            </p>
+                            <p>Pays: {selectedDeath.country}</p>
+                            <p>Ville: {selectedDeath.town}</p>
+                            <p>Sexe: {selectedDeath.sexe}</p>
+                            <p>Parents: {selectedDeath.parents}</p>
+                            <p>
+                                Nom du marié/mariée: {selectedDeath.marriedName}
+                            </p>
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button
+                                color="danger"
+                                variant="flat"
+                                onPress={closeModal}
+                            >
+                                Fermer
+                            </Button>
+                        </ModalFooter>
+                    </ModalContent>
+                </Modal>
+            )}
         </div>
     );
 };
