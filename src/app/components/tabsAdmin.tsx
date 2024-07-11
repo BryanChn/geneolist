@@ -89,15 +89,16 @@ export const MainTabs = () => {
 
     return (
         <div className="flex flex-col px-4">
-            <Switch
+            {/* <Switch
                 className="mb-4"
                 isSelected={isVertical}
                 onValueChange={setIsVertical}
             >
                 Vertical
-            </Switch>
+            </Switch> */}
             <div className="flex w-full flex-col">
-                <Tabs aria-label="Options" isVertical={isVertical}>
+                {/* isVertical={isVertical} add this to tabs for switch between vertical and horizontal */}
+                <Tabs aria-label="Options">
                     <Tab key="décès" title="Ajout d'un décès">
                         <form
                             className="flex flex-col gap-4"

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Table,
     TableHeader,
@@ -14,6 +14,7 @@ import {
     ModalFooter,
     Button,
 } from "@nextui-org/react";
+import { useSession } from "next-auth/react";
 
 const colors = [
     "default",
@@ -41,6 +42,20 @@ export const TablesDeath = ({ data }: { data: DeathData[] }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedDeath, setSelectedDeath] = useState<DeathData | null>(null);
     const [isSubscribed, setIsSubscribed] = useState(false);
+
+    const { data: session, status } = useSession();
+
+    useEffect(() => {
+        if (
+            (status === "authenticated" && session?.user?.role === "ADMIN") ||
+            (status === "authenticated" &&
+                session?.user?.subscription === "SUBSCRIBED")
+        ) {
+            setIsSubscribed(true);
+        } else {
+            setIsSubscribed(false);
+        }
+    }, [session, status]);
 
     const hideText = (text: string) => {
         return text
