@@ -20,17 +20,6 @@ export async function POST(req: Request) {
             );
         }
 
-        const freeSubscription = await prisma.subscription.findUnique({
-            where: { name: "free" },
-        });
-
-        if (!freeSubscription) {
-            return NextResponse.json(
-                { error: 'Abonnement par défaut "free" non trouvé' },
-                { status: 500 }
-            );
-        }
-
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const newUser = await prisma.user.create({
@@ -40,7 +29,7 @@ export async function POST(req: Request) {
                 lastName: lastName,
                 password: hashedPassword,
                 role: "USER",
-                subscriptionId: freeSubscription.id,
+                subscription: "FREE",
             },
         });
 
@@ -54,13 +43,35 @@ export async function POST(req: Request) {
     }
 }
 
+export async function PATCH(req: NextRequest) {
+    try {
+        const { id, subscription } = await req.json();
+
+        if (!["FREE", "SUBSCRIBED"].includes(subscription)) {
+            return NextResponse.json(
+                { error: "Type d'abonnement invalide" },
+                { status: 400 }
+            );
+        }
+
+        const updatedUser = await prisma.user.update({
+            where: { id: id },
+            data: { subscription: subscription },
+        });
+
+        return NextResponse.json(updatedUser, { status: 200 });
+    } catch (error) {
+        console.error("Erreur lors de la mise à jour de l'abonnement:", error);
+        return NextResponse.json(
+            { error: "Erreur lors de la mise à jour de l'abonnement" },
+            { status: 500 }
+        );
+    }
+}
+
 export async function GET(req: NextRequest) {
     try {
-        const users = await prisma.user.findMany({
-            include: {
-                subscription: true,
-            },
-        });
+        const users = await prisma.user.findMany({});
 
         return NextResponse.json(users, { status: 200 });
     } catch (error) {

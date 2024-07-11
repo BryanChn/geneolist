@@ -21,8 +21,7 @@ model User {
   name          String
   lastName      String
   role          Role            @default(USER)
-  subscription  Subscription?   @relation(fields: [subscriptionId], references: [id])
-  subscriptionId Int?
+  subscription  Subscription    @default(FREE)
 }
 
 enum Role {
@@ -30,11 +29,9 @@ enum Role {
   ADMIN
 }
 
-model Subscription {
-  id            Int             @id @default(autoincrement())
-  name          String          @unique
-  price         Float
-  users         User[]
+enum Subscription {
+  FREE
+  SUBSCRIBED
 }
 
 model Death {

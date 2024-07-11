@@ -40,6 +40,14 @@ interface DeathData {
 export const TablesDeath = ({ data }: { data: DeathData[] }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedDeath, setSelectedDeath] = useState<DeathData | null>(null);
+    const [isSubscribed, setIsSubscribed] = useState(false);
+
+    const hideText = (text: string) => {
+        return text
+            .split("")
+            .map(() => "*")
+            .join("");
+    };
 
     const openModal = (death: DeathData) => {
         setSelectedDeath(death);
@@ -90,9 +98,15 @@ export const TablesDeath = ({ data }: { data: DeathData[] }) => {
                         <ModalBody>
                             <p>
                                 Date de naissance:{" "}
-                                {new Date(
-                                    selectedDeath.dateBirth
-                                ).toLocaleDateString()}
+                                {isSubscribed
+                                    ? new Date(
+                                          selectedDeath.dateBirth
+                                      ).toLocaleDateString()
+                                    : hideText(
+                                          new Date(
+                                              selectedDeath.dateBirth
+                                          ).toLocaleDateString()
+                                      )}
                             </p>
                             <p>
                                 Date de décès:{" "}
@@ -101,11 +115,24 @@ export const TablesDeath = ({ data }: { data: DeathData[] }) => {
                                 ).toLocaleDateString()}
                             </p>
                             <p>Pays: {selectedDeath.country}</p>
-                            <p>Ville: {selectedDeath.town}</p>
-                            <p>Sexe: {selectedDeath.sexe}</p>
-                            <p>Parents: {selectedDeath.parents}</p>
                             <p>
-                                Nom du marié/mariée: {selectedDeath.marriedName}
+                                Ville:{" "}
+                                {isSubscribed
+                                    ? selectedDeath.town
+                                    : hideText(selectedDeath.town)}
+                            </p>
+                            <p>Sexe: {selectedDeath.sexe}</p>
+                            <p>
+                                Parents:{" "}
+                                {isSubscribed
+                                    ? selectedDeath.parents
+                                    : hideText(selectedDeath.parents)}
+                            </p>
+                            <p>
+                                Nom du marié/mariée:{" "}
+                                {isSubscribed
+                                    ? selectedDeath.marriedName
+                                    : hideText(selectedDeath.marriedName)}
                             </p>
                         </ModalBody>
                         <ModalFooter>

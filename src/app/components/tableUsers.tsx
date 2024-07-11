@@ -13,11 +13,7 @@ interface Users {
     name: string;
     lastName: string;
     email: string;
-    subscription: {
-        id: string;
-        name: string;
-        price: string;
-    } | null;
+    subscription: string;
 }
 
 export const TablesUsers = ({ data }: { data: Users[] }) => {
@@ -41,16 +37,7 @@ export const TablesUsers = ({ data }: { data: Users[] }) => {
                             <TableCell>{user.lastName}</TableCell>
                             <TableCell>{user.name}</TableCell>
                             <TableCell>{user.email}</TableCell>
-                            <TableCell>
-                                {user.subscription ? (
-                                    <div>
-                                        {user.subscription.name} -{" "}
-                                        {user.subscription.price}
-                                    </div>
-                                ) : (
-                                    <div>No subscription</div>
-                                )}
-                            </TableCell>
+                            <TableCell>{user.subscription}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
