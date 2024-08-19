@@ -14,7 +14,9 @@ import {
     ModalFooter,
     Button,
 } from "@nextui-org/react";
+import { SubsModal } from "./subsModal";
 import { useSession } from "next-auth/react";
+import { usePathname } from "next/navigation";
 
 const colors = [
     "default",
@@ -42,6 +44,7 @@ export const TablesDeath = ({ data }: { data: DeathData[] }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedDeath, setSelectedDeath] = useState<DeathData | null>(null);
     const [isSubscribed, setIsSubscribed] = useState(false);
+    const [modalSubsOpen, setModalSubsOpen] = useState(false);
 
     const { data: session, status } = useSession();
 
@@ -158,6 +161,20 @@ export const TablesDeath = ({ data }: { data: DeathData[] }) => {
                             >
                                 Fermer
                             </Button>
+
+                            {!isSubscribed && (
+                                <Button
+                                    color="success"
+                                    variant="flat"
+                                    onPress={() => setModalSubsOpen(true)}
+                                >
+                                    Je m&apos;abonne !
+                                </Button>
+                            )}
+                            <SubsModal
+                                isOpen={modalSubsOpen}
+                                onClose={() => setModalSubsOpen(false)}
+                            />
                         </ModalFooter>
                     </ModalContent>
                 </Modal>
