@@ -226,6 +226,10 @@ export const MainTabs = () => {
                             <TablesUsers data={showUsers} />
                         )}
                     </Tab>
+                    <Tab
+                        key="Subs"
+                        title="Demande d'abonnement à traiter"
+                    ></Tab>
                 </Tabs>
             </div>
         </div>

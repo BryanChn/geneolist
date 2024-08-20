@@ -32,7 +32,7 @@ interface Subscription {
     paymentMethod: string;
 }
 
-export const SubsModal: React.FC<SubsModalProps> = ({ isOpen, onClose }) => {
+export const SubsModal = ({ isOpen, onClose }: SubsModalProps) => {
     const {
         register,
         handleSubmit,
